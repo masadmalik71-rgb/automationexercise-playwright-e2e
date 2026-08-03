@@ -7,6 +7,5 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 /.env
-/.env
 
-/test/test**
+/test/test*

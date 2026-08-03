@@ -1,6 +1,6 @@
-# Automation Practice
+# Automation Exercise Playwright E2E
 
-End-to-end test automation project built with Playwright and TypeScript. The current test covers a user checkout flow, including login, adding products to the cart, proceeding through checkout, submitting payment details, and verifying that the order is placed successfully.
+End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The suite covers account signup and checkout flows, using environment variables for site URL and login credentials so sensitive values stay outside the repository.
 
 ## Tech Stack
 
@@ -14,12 +14,15 @@ End-to-end test automation project built with Playwright and TypeScript. The cur
 
 ```text
 .
-├── .github/workflows/playwright.yml
-├── tests/e2e.spec.ts
-├── playwright.config.ts
-├── package.json
-├── package-lock.json
-└── tsconfig.json
++-- .github/workflows/playwright.yml
++-- tests/
+|   +-- example.spec.ts
+|   +-- e2e.spec.ts
+|   +-- e2e-1.spec.ts
++-- playwright.config.ts
++-- package.json
++-- package-lock.json
++-- tsconfig.json
 ```
 
 ## Prerequisites
@@ -45,7 +48,7 @@ npx playwright install
 Create a `.env` file in the project root:
 
 ```env
-BASE_URL=https://example.com
+BASE_URL=https://automationexercise.com
 EMAIL=your-email@example.com
 PASSWORD=your-password
 ```
@@ -72,15 +75,11 @@ npx playwright show-report
 
 ## Test Coverage
 
-The current Playwright test performs the following flow:
+The active Playwright tests are stored in the `tests` directory.
 
-- Opens the configured base URL
-- Logs in with credentials from `.env`
-- Adds products to the cart
-- Opens the cart and proceeds to checkout
-- Adds an order message
-- Places the order with card details
-- Verifies the order confirmation message
+- `tests/example.spec.ts` creates a new customer account and fills the signup form.
+- `tests/e2e.spec.ts` logs in with credentials from `.env`, adds products to the cart, completes checkout, submits payment details, and verifies the order confirmation.
+- `tests/e2e-1.spec.ts` contains a commented checkout flow draft and does not currently run.
 
 ## Configuration
 
@@ -93,8 +92,17 @@ Key settings:
 - HTML reports are generated after test runs
 - Traces are collected on the first retry
 - CI retries failed tests twice
+- `BASE_URL`, `EMAIL`, and `PASSWORD` are loaded from `.env` locally
 
 ## CI
 
-GitHub Actions runs Playwright tests on pushes to the `main` branch. The workflow installs dependencies, installs Playwright browsers with system dependencies, runs the tests, and uploads the Playwright HTML report as an artifact.
+GitHub Actions runs Playwright tests on pushes to the `main` branch. The workflow uses the `testing` environment, reads `BASE_URL`, `EMAIL`, and `PASSWORD` from GitHub Secrets, validates that they are present, installs dependencies, installs Playwright browsers with system dependencies, runs the tests, and uploads the Playwright HTML report as an artifact.
+
+## GitHub Secrets
+
+Add these secrets in the GitHub repository or the `testing` environment before running the workflow:
+
+- `BASE_URL`
+- `EMAIL`
+- `PASSWORD`
 

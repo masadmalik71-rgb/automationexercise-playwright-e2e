@@ -1,25 +1,61 @@
 name: Playwright Tests
+
 on:
   push:
     branches: main
+
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    environment: testing
+
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      EMAIL: ${{ secrets.BASE_URL }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+  
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 1
+      - uses: actions/checkout@v4
+
+      - name: Validate required secrets
+        run: |
+          missing=0
+
+          check_secret() {
+            if [ -z "$2" ]; then
+              echo "::error::$1 is missing"
+              missing=1
+            fi
+          }
+
+          check_secret "TEST_BASE_URL" "$BASE_URL"
+          check_secret "TEST_EMAIL" "$EMAIL"
+          check_secret "TEST_PASSWORD" "$PASSWORD"
+
+          if [ "$missing" -eq 1 ]; then
+            echo "One or more required secrets are missing. Stopping workflow."
+            exit 1
+          fi
+
+          echo "All required secrets are available."
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: npx playwright test
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 1

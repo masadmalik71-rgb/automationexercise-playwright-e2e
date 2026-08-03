@@ -1,6 +1,6 @@
 # Automation Exercise Playwright E2E
 
-End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The suite covers account signup and checkout flows, using environment variables for site URL and login credentials so sensitive values stay outside the repository.
+End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The active test covers the login and checkout flow, using environment variables for the site URL and login credentials so sensitive values stay outside the repository.
 
 ## Tech Stack
 
@@ -75,10 +75,10 @@ npx playwright show-report
 
 ## Test Coverage
 
-The active Playwright tests are stored in the `tests` directory.
+The Playwright specs are stored in the `tests` directory.
 
-- `tests/example.spec.ts` creates a new customer account and fills the signup form.
-- `tests/e2e.spec.ts` logs in with credentials from `.env`, adds products to the cart, completes checkout, submits payment details, and verifies the order confirmation.
+- `tests/e2e.spec.ts` is the active test. It logs in with credentials from `.env`, adds products to the cart, completes checkout, submits payment details, and verifies the order confirmation.
+- `tests/example.spec.ts` contains a commented signup flow draft and does not currently run.
 - `tests/e2e-1.spec.ts` contains a commented checkout flow draft and does not currently run.
 
 ## Configuration
@@ -88,7 +88,8 @@ Playwright configuration is defined in `playwright.config.ts`.
 Key settings:
 
 - Tests are loaded from the `tests` directory
-- Tests run against Chromium, Firefox, and WebKit
+- Tests run against Chromium and Firefox
+- WebKit is present in the config as a commented project
 - HTML reports are generated after test runs
 - Traces are collected on the first retry
 - CI retries failed tests twice

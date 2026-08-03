@@ -1,12 +1,13 @@
 import { test, expect } from '@playwright/test';
+import dotenv from 'dotenv';
 
 test('test', async ({ page }) => {
-  await page.goto('https://automationexercise.com/');
+  await page.goto('');
   await page.getByRole('link', { name: ' Signup / Login' }).click();
   await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').click();
-  await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').fill('testingprac71@yopmail.com');
+  await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').fill(`${process.env.EMAIL}`);
   await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').press('Tab');
-  await page.getByRole('textbox', { name: 'Password' }).fill('123456789');
+  await page.getByRole('textbox', { name: 'Password' }).fill(`${process.env.PASSWORD}`);
   await page.getByRole('button', { name: 'Login' }).click();
   await page.getByText('Rs. 500 Blue Top Add to cart').first().hover();
   await page.getByText('Add to cart').nth(1).click();

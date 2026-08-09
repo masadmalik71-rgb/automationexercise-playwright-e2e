@@ -11,7 +11,7 @@ test('test', async ({ page }) => {
   await page.getByText('Rs. 500 Blue Top Add to cart').first().hover();
   await page.getByText('Add to cart').nth(1).click();
   await page.getByRole('button', { name: 'Continue Shopping' }).click();
-  await page.getByText('Rs. 600 Winter Top Add to cart').first().hover();
+  await page.getByText('Rs. 600 Winter Top Add to cart Rs. 600 Winter Top Add to cart View Product').hover();
   await page.locator('div:nth-child(7) > .product-image-wrapper > .single-products > .product-overlay > .overlay-content > .btn').click();
   await page.getByRole('link', { name: 'View Cart' }).click();
   await page.getByText('Proceed To Checkout').click();

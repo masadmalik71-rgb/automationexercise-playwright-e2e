@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import type { CustomerData } from '../utils/datamaker';
 
 export class LoginPage {
@@ -13,8 +13,17 @@ export class LoginPage {
   }
 
   async openSignupLoginPage() {
-    await this.page.getByRole('link', { name: /Signup \/ Login/ }).click();
-    await this.page.waitForURL('/login');
+    const signupLoginLink = this.page.getByRole('link', {
+      name: 'Signup / Login',
+    });
+
+    await expect(signupLoginLink).toBeVisible({
+      timeout: 15_000,
+    });
+
+    await signupLoginLink.click();
+
+    await this.page.waitForURL('**/login');
   }
 
   async signupWithCustomerData(customerData: CustomerData) {
@@ -34,7 +43,7 @@ export class LoginPage {
 
   async loginWithCustomerData(){
     await this.page.goto('/');
-    await this.page.getByRole('link', { name: ' Signup / Login' }).click();
+    await this.page.getByRole('link', { name: 'Signup / Login' }).click();
     await this.page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').fill(`${process.env.EMAIL}`);
     await this.page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').press('Tab');
     await this.page.getByRole('textbox', { name: 'Password' }).fill(`${process.env.PASSWORD}`);

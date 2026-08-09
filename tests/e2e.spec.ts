@@ -1,42 +1,30 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "../fixtures/testFixtures";
 
-test('test', async ({ page }) => {
-  await page.goto('');
-  await page.getByRole('link', { name: ' Signup / Login' }).click();
-  await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').click();
-  await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').fill(`${process.env.EMAIL}`);
-  await page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').press('Tab');
-  await page.getByRole('textbox', { name: 'Password' }).fill(`${process.env.PASSWORD}`);
-  await page.getByRole('button', { name: 'Login' }).click();
-  await page.getByText('Rs. 500 Blue Top Add to cart').first().hover();
-  await page.getByText('Add to cart').nth(1).click();
-  await page.getByRole('button', { name: 'Continue Shopping' }).click();
-  await page.getByText('Rs. 600 Winter Top Add to cart Rs. 600 Winter Top Add to cart View Product').hover();
-  await page.locator('div:nth-child(7) > .product-image-wrapper > .single-products > .product-overlay > .overlay-content > .btn').click();
-  await page.getByRole('link', { name: 'View Cart' }).click();
-  await page.getByText('Proceed To Checkout').click();
-  await page.locator('textarea[name="message"]').click();
-  await page.locator('textarea[name="message"]').fill('lorem text');
-  await page.getByRole('link', { name: 'Place Order' }).click();
-  await page.locator('input[name="name_on_card"]').click();
-  await page.locator('input[name="name_on_card"]').fill('4242424242424242');
-  await page.locator('input[name="name_on_card"]').press('ControlOrMeta+a');
-  await page.locator('input[name="name_on_card"]').press('ControlOrMeta+x');
-  await page.locator('input[name="name_on_card"]').fill('');
-  await page.locator('input[name="card_number"]').click();
-  await page.locator('input[name="card_number"]').fill('4242424242424242');
-  await page.locator('input[name="name_on_card"]').click();
-  await page.locator('input[name="name_on_card"]').fill('Asad Malik');
-  await page.getByRole('textbox', { name: 'ex.' }).click();
-  await page.getByRole('textbox', { name: 'ex.' }).fill('311');
-  await page.getByRole('textbox', { name: 'ex.' }).press('Tab');
-  await page.getByRole('textbox', { name: 'MM' }).fill('01');
-  await page.getByRole('textbox', { name: 'MM' }).press('Tab');
-  await page.getByRole('textbox', { name: 'YYYY' }).fill('2030');
-  await page.getByRole('button', { name: 'Pay and Confirm Order' }).click();
-  await expect(page.getByText('Order Placed!')).toBeVisible();
-  await expect(page.getByText('Congratulations! Your order')).toBeVisible();
-  // const downloadPromise = page.waitForEvent('download');
-  // await page.getByRole('link', { name: 'Download Invoice' }).click();
-  // const download = await downloadPromise;
+test('should login, checkout product, and place order', async ({
+  productsPage,
+  viewCartPage,
+  checkOutPage,
+  paymentPage,
+  paymentDonePage,
+  customerData
+}) => {
+
+  await productsPage.clickAddToCart(3);
+
+  await productsPage.clickContinueShopping();
+
+  await productsPage.clickAddToCart(43);
+
+  await productsPage.clickViewCart();
+  
+  await viewCartPage.clickProceedToCheckout();
+  
+  await checkOutPage.confirmCustomerDetail(customerData);
+  
+  await checkOutPage.clickOnPlaceOrder();
+  
+  await paymentPage.paymentDetailsPage(customerData);
+  
+  await paymentDonePage.confirmOrderPlaced();
+
 });

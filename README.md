@@ -1,6 +1,6 @@
 # Automation Exercise Playwright E2E
 
-End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The active test covers the login and checkout flow, using environment variables for the site URL and login credentials so sensitive values stay outside the repository.
+End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The suite creates a fresh customer in global setup, saves authenticated browser state, runs the checkout flow, and deletes the test account during global teardown.
 
 ## Tech Stack
 
@@ -15,10 +15,22 @@ End-to-end test automation project for Automation Exercise built with Playwright
 ```text
 .
 +-- .github/workflows/playwright.yml
++-- fixtures/
+|   +-- testFixtures.ts
++-- pages/
+|   +-- CheckOutPage.ts
+|   +-- LoginPage.ts
+|   +-- PaymentDonePage.ts
+|   +-- PaymentPage.ts
+|   +-- ProductsPage.ts
+|   +-- SignUpPage.ts
+|   +-- ViewCartPage.ts
 +-- tests/
-|   +-- example.spec.ts
 |   +-- e2e.spec.ts
-|   +-- e2e-1.spec.ts
++-- utils/
+|   +-- datamaker.ts
++-- globalSetup.ts
++-- globalTeardown.ts
 +-- playwright.config.ts
 +-- package.json
 +-- package-lock.json
@@ -49,9 +61,9 @@ Create a `.env` file in the project root:
 
 ```env
 BASE_URL=https://automationexercise.com
-EMAIL=your-email@example.com
-PASSWORD=your-password
 ```
+
+Customer data is generated with Faker during `globalSetup.ts`. Playwright stores the authenticated session and generated customer data under `playwright/.auth/`.
 
 ## Running Tests
 
@@ -77,9 +89,11 @@ npx playwright show-report
 
 The Playwright specs are stored in the `tests` directory.
 
-- `tests/e2e.spec.ts` is the active test. It logs in with credentials from `.env`, adds products to the cart, completes checkout, submits payment details, and verifies the order confirmation.
-- `tests/example.spec.ts` contains a commented signup flow draft and does not currently run.
-- `tests/e2e-1.spec.ts` contains a commented checkout flow draft and does not currently run.
+- `tests/e2e.spec.ts` contains the active test case: `should login, checkout product, and place order`.
+- The test uses page object fixtures from `fixtures/testFixtures.ts`.
+- The flow adds products to the cart, proceeds through checkout, submits payment details, and verifies the order confirmation.
+- `globalSetup.ts` creates and logs in a new customer before tests run.
+- `globalTeardown.ts` deletes the test account after the run.
 
 ## Configuration
 
@@ -88,22 +102,21 @@ Playwright configuration is defined in `playwright.config.ts`.
 Key settings:
 
 - Tests are loaded from the `tests` directory
-- Tests run against Chromium and Firefox
-- WebKit is present in the config as a commented project
+- Tests run against Chromium
+- Additional browser projects are present in the config as commented examples
 - HTML reports are generated after test runs
 - Traces are collected on the first retry
 - CI retries failed tests twice
-- `BASE_URL`, `EMAIL`, and `PASSWORD` are loaded from `.env` locally
+- `BASE_URL` is loaded from `.env` locally
+- Auth state is reused from `playwright/.auth/user.json`
 
 ## CI
 
-GitHub Actions runs Playwright tests on pushes to the `main` branch. The workflow uses the `testing` environment, reads `BASE_URL`, `EMAIL`, and `PASSWORD` from GitHub Secrets, validates that they are present, installs dependencies, installs Playwright browsers with system dependencies, runs the tests, and uploads the Playwright HTML report as an artifact.
+GitHub Actions runs Playwright tests on pushes to the `main` branch. The workflow uses the `testing` environment, reads `BASE_URL` from GitHub Secrets, validates that it is present, installs dependencies, installs Playwright browsers with system dependencies, runs the tests, and uploads the Playwright HTML report as an artifact.
 
 ## GitHub Secrets
 
 Add these secrets in the GitHub repository or the `testing` environment before running the workflow:
 
 - `BASE_URL`
-- `EMAIL`
-- `PASSWORD`
 

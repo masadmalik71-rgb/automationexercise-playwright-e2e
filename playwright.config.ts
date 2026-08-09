@@ -11,15 +11,26 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 dotenv.config();
 
+if (!process.env.BASE_URL) {
+  throw new Error('BASE_URL is not defined');
+}
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+
   testDir: './tests',
+
+  globalSetup: require.resolve('./globalSetup'),
+  globalTeardown: require.resolve('./globalTeardown'),
+  
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
+
+  timeout: 60_000,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
@@ -30,7 +41,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.BASE_URL,
-
+    storageState: 'playwright/.auth/user.json',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
@@ -42,10 +53,10 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
 
     // {
     //   name: 'webkit',

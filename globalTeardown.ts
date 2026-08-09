@@ -1,35 +1,51 @@
-import { chromium, expect, type FullConfig } from '@playwright/test';
-import { LoginPage } from './pages/LoginPage';
+import {
+  request,
+  expect,
+  type FullConfig,
+} from '@playwright/test';
+
+import fs from 'fs';
+
+import type { CustomerData } from './utils/datamaker';
 
 async function globalTeardown(config: FullConfig) {
   const baseURL = config.projects[0].use.baseURL as string;
 
-  const browser = await chromium.launch({
-    headless: true,
-  });
+  const customerData: CustomerData = JSON.parse(
+    fs.readFileSync(
+      'playwright/.auth/customer.json',
+      'utf-8'
+    )
+  );
 
-  const context = await browser.newContext({
+  const apiContext = await request.newContext({
     baseURL,
-    storageState: 'playwright/.auth/user.json',
   });
 
-  const page = await context.newPage();
+  try {
+    const response = await apiContext.delete(
+      '/api/deleteAccount',
+      {
+        form: {
+          email: customerData.email,
+          password: customerData.password,
+        },
+      }
+    );
 
-  const loginPage = new LoginPage(page);
+    expect(response.ok()).toBeTruthy();
 
-  await loginPage.goto();
+    const responseBody = await response.json();
 
-  await expect(
-    page.getByText(/Logged in as/i)
-  ).toBeVisible();
+    console.log(
+      'Delete account response:',
+      responseBody
+    );
 
-  await loginPage.deleteAccount();
-
-  await expect(
-    page.getByText(/Account Deleted/i)
-  ).toBeVisible();
-
-  await browser.close();
+    expect(responseBody.responseCode).toBe(200);
+  } finally {
+    await apiContext.dispose();
+  }
 }
 
 export default globalTeardown;

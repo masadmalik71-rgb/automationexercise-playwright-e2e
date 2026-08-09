@@ -37,6 +37,23 @@ export class CheckOutPage{
   }
 
   async clickOnPlaceOrder() {
-    await this.page.getByRole('link', { name: 'Place Order' }).click();
+    const placeOrderButton = this.page.getByRole('link', {
+      name: /Place Order/i,
+    });
+
+    await expect(placeOrderButton).toBeVisible();
+
+    await placeOrderButton.click();
+
+    // Verify navigation happened
+    await expect(this.page).toHaveURL(/\/payment/, {
+      timeout: 15_000,
+    });
+
+    await expect(
+      this.page.locator('input[name="name_on_card"]')
+    ).toBeVisible({
+      timeout: 15_000,
+    });
   }
 }

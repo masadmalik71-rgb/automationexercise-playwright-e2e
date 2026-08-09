@@ -1,6 +1,6 @@
 # Automation Exercise Playwright E2E
 
-End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The suite creates a fresh customer in global setup, saves authenticated browser state, runs the checkout flow, and deletes the test account during global teardown.
+End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The suite creates a fresh customer in global setup, saves authenticated browser state, runs the checkout flow, and deletes the test account through the API during global teardown.
 
 ## Tech Stack
 
@@ -93,7 +93,7 @@ The Playwright specs are stored in the `tests` directory.
 - The test uses page object fixtures from `fixtures/testFixtures.ts`.
 - The flow adds products to the cart, proceeds through checkout, submits payment details, and verifies the order confirmation.
 - `globalSetup.ts` creates and logs in a new customer before tests run.
-- `globalTeardown.ts` deletes the test account after the run.
+- `globalTeardown.ts` deletes the test account through the Automation Exercise API after the run.
 
 ## Configuration
 

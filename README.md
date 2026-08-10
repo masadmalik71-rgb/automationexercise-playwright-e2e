@@ -127,6 +127,8 @@ Key settings:
 - CI retries failed tests twice
 - `BASE_URL` is loaded from `.env` locally
 - Auth state is reused from `playwright/.auth/user.json`
+- Actions time out after 15 seconds
+- Navigations time out after 60 seconds
 
 ## CI
 

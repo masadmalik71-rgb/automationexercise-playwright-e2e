@@ -42,6 +42,8 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.BASE_URL,
     storageState: 'playwright/.auth/user.json',
+    actionTimeout: 15000,
+    navigationTimeout: 60000,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },

@@ -10,7 +10,7 @@ export class LoginPage {
 
   async goto() {
     await this.page.goto('/');
-    await this.page.waitForURL('/');
+    await expect(this.page).toHaveURL('/');
   }
 
   async openSignupLoginPage() {
@@ -24,7 +24,7 @@ export class LoginPage {
 
     await signupLoginLink.click();
 
-    await this.page.waitForURL('**/login');
+    await expect(this.page).toHaveURL('/login');
   }
 
   async signupWithCustomerData(customerData: CustomerData) {
@@ -39,7 +39,7 @@ export class LoginPage {
       .fill(customerData.email);
 
     await this.page.getByRole('button', { name: 'Signup' }).click();
-    await this.page.waitForURL('/signup');
+    await expect(this.page).toHaveURL('/signup');
   }
 
   async loginWithCustomerData(){
@@ -65,11 +65,11 @@ export class LoginPage {
 
   async clickOnCart() {
     await this.page.getByRole('link', { name: 'Cart' }).click();
-    await this.page.waitForURL('**/view_cart');
+    await expect(this.page).toHaveURL('/view_cart');
   }
 
   async clickOnProduct() {
     await this.page.getByRole('link', { name: 'Products' }).click();
-    await this.page.waitForURL('**/products');
+    await expect(this.page).toHaveURL('/products');
   }
 }

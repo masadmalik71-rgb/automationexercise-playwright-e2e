@@ -13,28 +13,39 @@ export class ProductsPage {
     await this.page.waitForLoadState('domcontentloaded');
   }
 
-  async clickAddToCart(productId: number): Promise<Product> {
+  async clickAddToCart(productId:number): Promise<Product> {
 
-    const product = this.page.locator(
-        `.productinfo:has([data-product-id="${productId}"])`
-    ).first();
+      const product = this.page.locator(
+          `.productinfo:has([data-product-id="${productId}"])`
+      ).first();
 
-    const productName = (await product.locator('p').innerText()).slice(0, 33);
 
-    const price = Number(
-        (await product.locator('h2').innerText())
-        .replace(/\D/g, '')
-    );
+      await product.waitFor({
+          state:'visible'
+      });
 
-    await product
-        .locator(`[data-product-id="${productId}"]`)
-        .click();
 
-    return {
-        productName,
-        price,
-        quantity: 1
-    };
+      const productName = (
+          await product.locator('p').innerText()
+      ).slice(0,33);
+
+
+      const price = Number(
+          (await product.locator('h2').innerText())
+          .replace(/\D/g,'')
+      );
+
+
+      await product
+          .locator(`[data-product-id="${productId}"]`)
+          .click();
+
+
+      return {
+          productName,
+          price,
+          quantity:1
+      };
   }
 
   async clickContinueShopping() {
@@ -43,7 +54,7 @@ export class ProductsPage {
 
   async clickViewCart() {
     await this.page.getByRole('link', { name: 'View Cart' }).click();
-    await this.page.waitForURL('/view_cart')
+    await expect(this.page).toHaveURL('/view_cart')
   }
 
   async clickViewProductDetails(productId:number) {
@@ -52,7 +63,7 @@ export class ProductsPage {
     ).first();
 
     await productLink.click();
-    await this.page.waitForURL('**/product_details/**')
+    await expect(this.page).toHaveURL('/product_details/')
   }
 
   async searchProduct(productName:string) {
@@ -63,7 +74,7 @@ export class ProductsPage {
 
   async clickOnProducts() {
     await this.page.getByRole('link', { name: 'Products' }).click();
-    await this.page.waitForURL('**/products');
+    await expect(this.page).toHaveURL('/products');
   }
 
 }

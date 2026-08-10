@@ -17,8 +17,6 @@ test('Verify Product quantity in Cart', async ({
 
   selectedProducts.push(product);
 
-  console.log(selectedProducts);
-  
   await productDetailsPage.clickAddToCart();
 
   await productsPage.clickViewCart();  

@@ -1,6 +1,6 @@
 # Automation Exercise Playwright E2E
 
-End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The suite creates a fresh customer in global setup, saves authenticated browser state, runs the checkout flow, and deletes the test account through the API during global teardown.
+End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The suite creates a fresh customer in global setup, saves authenticated browser state, runs focused product, cart, subscription, and checkout flows, and deletes the test account through the API during global teardown.
 
 ## Tech Stack
 
@@ -17,16 +17,27 @@ End-to-end test automation project for Automation Exercise built with Playwright
 +-- .github/workflows/playwright.yml
 +-- fixtures/
 |   +-- testFixtures.ts
++-- helpers/
+|   +-- productHelper.ts
 +-- pages/
 |   +-- CheckOutPage.ts
 |   +-- LoginPage.ts
 |   +-- PaymentDonePage.ts
 |   +-- PaymentPage.ts
+|   +-- ProductDetailsPage.ts
 |   +-- ProductsPage.ts
 |   +-- SignUpPage.ts
 |   +-- ViewCartPage.ts
 +-- tests/
-|   +-- e2e.spec.ts
+|   +-- test-case-8.spec.ts
+|   +-- test-case-9.spec.ts
+|   +-- test-case-10.spec.ts
+|   +-- test-case-11.spec.ts
+|   +-- test-case-12.spec.ts
+|   +-- test-case-13.spec.ts
+|   +-- test-case-15.spec.ts
++-- types/
+|   +-- products.ts
 +-- utils/
 |   +-- datamaker.ts
 +-- globalSetup.ts
@@ -87,11 +98,18 @@ npx playwright show-report
 
 ## Test Coverage
 
-The Playwright specs are stored in the `tests` directory.
+The Playwright specs are stored in the `tests` directory and are split by Automation Exercise test case.
 
-- `tests/e2e.spec.ts` contains the active test case: `should login, checkout product, and place order`.
-- The test uses page object fixtures from `fixtures/testFixtures.ts`.
-- The flow adds products to the cart, proceeds through checkout, submits payment details, and verifies the order confirmation.
+- `tests/test-case-8.spec.ts` verifies the all products page and product details page.
+- `tests/test-case-9.spec.ts` verifies product search.
+- `tests/test-case-10.spec.ts` verifies subscription from the home page.
+- `tests/test-case-11.spec.ts` verifies subscription from the cart page.
+- `tests/test-case-12.spec.ts` verifies adding multiple products to the cart, matching cart details, and removing products.
+- `tests/test-case-13.spec.ts` verifies product quantity in the cart.
+- `tests/test-case-15.spec.ts` verifies the registered-user checkout and order placement flow.
+- The tests use page object fixtures from `fixtures/testFixtures.ts`.
+- Shared cart product data is represented by `types/products.ts`.
+- `helpers/productHelper.ts` consolidates duplicate cart product selections by increasing quantity.
 - `globalSetup.ts` creates and logs in a new customer before tests run.
 - `globalTeardown.ts` deletes the test account through the Automation Exercise API after the run.
 

@@ -11,6 +11,11 @@ import type { CustomerData } from './utils/datamaker';
 async function globalTeardown(config: FullConfig) {
   const baseURL = config.projects[0].use.baseURL as string;
 
+  if (!fs.existsSync('playwright/.auth/customer.json')) {
+      console.log('No customer data found, skipping cleanup');
+      return;
+  }
+
   const customerData: CustomerData = JSON.parse(
     fs.readFileSync(
       'playwright/.auth/customer.json',

@@ -25,11 +25,17 @@ async function globalSetup(config: FullConfig) {
   const customerData = createCustomerData();
 
   await loginPage.goto();
+
+  console.log('Current URL:', page.url());
+
+  await page.screenshot({
+      path: 'global-setup.png'
+  });
+
   await loginPage.openSignupLoginPage();
   await loginPage.signupWithCustomerData(customerData);
 
   await signUpPage.fillWithSignUp(customerData);
-//   await signUpPage.clickOnCreateAccount();
 
   await expect(
     page.getByText(/Logged in as/i)

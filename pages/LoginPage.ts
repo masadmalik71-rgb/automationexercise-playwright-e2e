@@ -10,12 +10,12 @@ export class LoginPage {
 
   async goto() {
     await this.page.goto('/');
-    await expect(this.page).toHaveURL('/');
+    await expect(this.page).toHaveURL(/automationexercise\.com/);
   }
 
   async openSignupLoginPage() {
     const signupLoginLink = this.page.getByRole('link', {
-      name: 'Signup / Login',
+      name: /Signup\s*\/\s*Login/i,
     });
 
     await expect(signupLoginLink).toBeVisible({

@@ -1,5 +1,29 @@
 import { faker } from '@faker-js/faker';
 
+export type CustomerData = {
+  title: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  day: string,
+  month: string,
+  year: string,
+  company: string,
+  address1: string,
+  address2: string,
+  country: string,
+  state: string,
+  city: string,
+  zipcode: string,
+  mobileNumber: string,
+  checkoutMessage: string,
+  creditCardNumber: string,
+  creditCardCVV: string,
+  creditCardExpiryMonth: string,
+  creditCardExpiryYear: string,
+}
+
 export const createCustomerData = () => {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
@@ -58,5 +82,3 @@ const creditCardExpiryYear = creditCardExpiryDate
     creditCardExpiryYear,
     };
 };
-
-export type CustomerData = ReturnType<typeof createCustomerData>;

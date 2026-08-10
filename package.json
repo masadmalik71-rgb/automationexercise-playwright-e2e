@@ -1,20 +1,31 @@
 {
-  "name": "automation-practice",
+  "name": "package.json",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "description": "End-to-end test automation project for Automation Exercise built with Playwright and TypeScript. The suite creates a fresh customer in global setup, saves authenticated browser state, runs the checkout flow, and deletes the test account through the API during global teardown.",
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
-    "@faker-js/faker": "^10.5.0",
-    "@playwright/test": "^1.61.1",
-    "@types/dotenv": "^6.1.1",
-    "@types/node": "^26.1.0"
+  "homepage": "https://github.com/masadmalik71-rgb/automationexercise-playwrigAutomation-Exercise-E2E-Testing-Framework-with-Playwright-and-TypeSht-e2e#readme",
+  "bugs": {
+    "url": "https://github.com/masadmalik71-rgb/automationexercise-playwrigAutomation-Exercise-E2E-Testing-Framework-with-Playwright-and-TypeSht-e2e/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masadmalik71-rgb/automationexercise-playwrigAutomation-Exercise-E2E-Testing-Framework-with-Playwright-and-TypeSht-e2e.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "ts",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {},
   "dependencies": {
     "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.5.0",
+    "@playwright/test": "^1.62.1",
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^26.1.0"
   }
 }

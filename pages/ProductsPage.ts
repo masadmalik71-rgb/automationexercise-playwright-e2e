@@ -1,4 +1,5 @@
-import { Page } from "@playwright/test";
+import { Page, expect } from "@playwright/test";
+import { Product } from "../types/products";
 
 export class ProductsPage {
   readonly page: Page;
@@ -7,9 +8,33 @@ export class ProductsPage {
     this.page = page;
   }
 
-  async clickAddToCart(productId:number) {
+  async gotoProducts() {
     await this.page.goto('/products');
-    await this.page.locator(`[data-product-id="${productId}"]`).nth(0).click();
+    await this.page.waitForLoadState('domcontentloaded');
+  }
+
+  async clickAddToCart(productId: number): Promise<Product> {
+
+    const product = this.page.locator(
+        `.productinfo:has([data-product-id="${productId}"])`
+    ).first();
+
+    const productName = (await product.locator('p').innerText()).slice(0, 33);
+
+    const price = Number(
+        (await product.locator('h2').innerText())
+        .replace(/\D/g, '')
+    );
+
+    await product
+        .locator(`[data-product-id="${productId}"]`)
+        .click();
+
+    return {
+        productName,
+        price,
+        quantity: 1
+    };
   }
 
   async clickContinueShopping() {
@@ -20,4 +45,25 @@ export class ProductsPage {
     await this.page.getByRole('link', { name: 'View Cart' }).click();
     await this.page.waitForURL('/view_cart')
   }
+
+  async clickViewProductDetails(productId:number) {
+    const productLink = this.page.locator(
+      `a[href*="/product_details/${productId}"]`
+    ).first();
+
+    await productLink.click();
+    await this.page.waitForURL('**/product_details/**')
+  }
+
+  async searchProduct(productName:string) {
+    await this.page.getByRole('textbox', { name: 'Search Product' }).fill(productName);
+    await this.page.locator('#submit_search').click();
+    await expect(this.page.getByText('Blue Top').first()).toContainText(productName);
+  }
+
+  async clickOnProducts() {
+    await this.page.getByRole('link', { name: 'Products' }).click();
+    await this.page.waitForURL('**/products');
+  }
+
 }

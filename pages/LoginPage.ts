@@ -10,6 +10,7 @@ export class LoginPage {
 
   async goto() {
     await this.page.goto('/');
+    await this.page.waitForURL('/');
   }
 
   async openSignupLoginPage() {
@@ -52,5 +53,23 @@ export class LoginPage {
 
   async deleteAccount() {
     await this.page.getByRole('link', { name: 'Delete Account' }).click();
+  }
+
+  async subscribeForEmail(customerData: CustomerData) {
+    await this.page.getByRole('textbox', { name: 'Your email address' }).scrollIntoViewIfNeeded();
+    await expect(this.page.getByRole('textbox', { name: 'Your email address' })).toBeVisible();
+    await this.page.getByRole('textbox', { name: 'Your email address' }).fill(customerData.email);
+    await this.page.locator('#subscribe').click();
+    await expect(this.page.getByText('You have been successfully subscribed!')).toBeVisible();
+  }
+
+  async clickOnCart() {
+    await this.page.getByRole('link', { name: 'Cart' }).click();
+    await this.page.waitForURL('**/view_cart');
+  }
+
+  async clickOnProduct() {
+    await this.page.getByRole('link', { name: 'Products' }).click();
+    await this.page.waitForURL('**/products');
   }
 }

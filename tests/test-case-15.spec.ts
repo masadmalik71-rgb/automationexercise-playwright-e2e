@@ -1,6 +1,6 @@
 import { test, expect } from "../fixtures/testFixtures";
 
-test('should login, checkout product, and place order', async ({
+test('Place Order: Register before Checkout', async ({
   productsPage,
   viewCartPage,
   checkOutPage,

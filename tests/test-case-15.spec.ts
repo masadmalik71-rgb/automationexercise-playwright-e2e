@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/testFixtures";
+import { test } from "../fixtures/testFixtures";
 
 test('Place Order: Register before Checkout', async ({
   productsPage,

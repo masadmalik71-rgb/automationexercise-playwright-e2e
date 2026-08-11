@@ -42,13 +42,15 @@ export class LoginPage {
     await expect(this.page).toHaveURL('/signup');
   }
 
-  async loginWithCustomerData(){
-    await this.page.goto('/');
-    await this.page.getByRole('link', { name: 'Signup / Login' }).click();
-    await this.page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').fill(`${process.env.EMAIL}`);
+  async loginWithCustomerData(customerData: CustomerData){
+    await this.page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').fill(customerData.email);
     await this.page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address').press('Tab');
-    await this.page.getByRole('textbox', { name: 'Password' }).fill(`${process.env.PASSWORD}`);
+    await this.page.getByRole('textbox', { name: 'Password' }).fill(customerData.password);
     await this.page.getByRole('button', { name: 'Login' }).click();
+    await this.page.waitForLoadState('domcontentloaded');
+    await expect(
+      this.page.getByText(/Logged in as/i)
+    ).toBeVisible();
   }
 
   async deleteAccount() {
@@ -71,5 +73,17 @@ export class LoginPage {
   async clickOnProduct() {
     await this.page.getByRole('link', { name: 'Products' }).click();
     await expect(this.page).toHaveURL('/products');
+  }
+
+  async clickOnLogout() {
+    await this.page.getByRole('link', { name: 'Logout' }).first().click();
+  }
+
+  async isUserLoggedIn(): Promise<boolean> {
+
+      return await this.page
+          .getByText(/Logged in as/i)
+          .isVisible();
+
   }
 }

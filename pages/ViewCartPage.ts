@@ -13,7 +13,7 @@ export class ViewCartPage{
   }
 
   async removeAllProducts() {
-    
+
     const removeButtons = this.page.locator(
         '#cart_info .cart_quantity_delete'
     );
@@ -35,23 +35,32 @@ export class ViewCartPage{
 
     for (const product of products) {
 
-        const productRow = this.page.locator('tr').filter({
-            hasText: product.productName
-        });
+      const productRow = this.page.locator('tr').filter({
+          hasText: product.productName
+      });
 
 
-        await expect(productRow).toBeVisible();
+      await expect(productRow).toBeVisible();
 
 
-        await expect(productRow).toContainText(
-            `Rs. ${product.price}`
-        );
+      await expect(productRow).toContainText(
+          `Rs. ${product.price}`
+      );
 
 
-        await expect(productRow).toContainText(
-            `Rs. ${product.price * product.quantity}`
-        );
+      await expect(productRow).toContainText(
+          `Rs. ${product.price * product.quantity}`
+      );
 
     }
+  }
+
+  async clickOnRegisterLogin() {
+    await this.page.getByRole('link', { name: 'Register / Login' }).click();
+    await this.page.waitForLoadState('domcontentloaded');
+  }
+
+  async clickOnContinueOnCart() {
+    await this.page.getByRole('button', { name: 'Continue On Cart' }).click();
   }
 }

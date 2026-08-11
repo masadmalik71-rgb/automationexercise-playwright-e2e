@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/testFixtures";
+import { test } from "../fixtures/testFixtures";
 import { Product } from "../types/products";
 
 test('Verify Product quantity in Cart', async ({

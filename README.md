@@ -35,7 +35,10 @@ End-to-end test automation project for Automation Exercise built with Playwright
 |   +-- test-case-11.spec.ts
 |   +-- test-case-12.spec.ts
 |   +-- test-case-13.spec.ts
+|   +-- test-case-14.spec.ts
 |   +-- test-case-15.spec.ts
+|   +-- test-case-16.spec.ts
+|   +-- test-case-17.spec.ts
 +-- types/
 |   +-- products.ts
 +-- utils/
@@ -106,7 +109,10 @@ The Playwright specs are stored in the `tests` directory and are split by Automa
 - `tests/test-case-11.spec.ts` verifies subscription from the cart page.
 - `tests/test-case-12.spec.ts` verifies adding multiple products to the cart, matching cart details, and removing products.
 - `tests/test-case-13.spec.ts` verifies product quantity in the cart.
+- `tests/test-case-14.spec.ts` verifies checkout after registering during the checkout flow.
 - `tests/test-case-15.spec.ts` verifies the registered-user checkout and order placement flow.
+- `tests/test-case-16.spec.ts` verifies checkout after logging in before checkout.
+- `tests/test-case-17.spec.ts` verifies removing products from the cart.
 - The tests use page object fixtures from `fixtures/testFixtures.ts`.
 - Shared cart product data is represented by `types/products.ts`.
 - `helpers/productHelper.ts` consolidates duplicate cart product selections by increasing quantity.

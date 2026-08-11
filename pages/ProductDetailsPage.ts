@@ -38,8 +38,6 @@ export class ProductDetailsPage {
 
     const quantity = Number((await productDetails.locator('#quantity').inputValue()));
 
-    console.log(quantity);
-
     return {
         productName,
         price,

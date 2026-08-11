@@ -63,7 +63,7 @@ export class ProductsPage {
     ).first();
 
     await productLink.click();
-    await expect(this.page).toHaveURL('/product_details/')
+    await expect(this.page).toHaveURL(new RegExp(`/product_details/${productId}`));
   }
 
   async searchProduct(productName:string) {

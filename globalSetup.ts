@@ -28,9 +28,9 @@ async function globalSetup(config: FullConfig) {
 
   console.log('Current URL:', page.url());
 
-  await page.screenshot({
-      path: 'global-setup.png'
-  });
+  // await page.screenshot({
+  //     path: 'global-setup.png'
+  // });
 
   await loginPage.openSignupLoginPage();
   await loginPage.signupWithCustomerData(customerData);

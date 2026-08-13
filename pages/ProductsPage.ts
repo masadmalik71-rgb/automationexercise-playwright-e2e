@@ -1,55 +1,64 @@
-import { Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import { Product } from "../types/products";
 
 export class ProductsPage {
   readonly page: Page;
+  readonly productButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.productButton = this.page.getByRole('link', { name: 'Products' });
   }
 
-  async gotoProducts() {
-    await this.page.goto('/products');
+  async clickOnProduct() {
+    await this.productButton.click();
     await this.page.waitForLoadState('domcontentloaded');
   }
 
   async clickAddToCart(productId:number): Promise<Product> {
 
-      const product = this.page.locator(
-          `.productinfo:has([data-product-id="${productId}"])`
-      ).first();
+    let product = this.page.locator(
+        `.productinfo:has([data-product-id="${productId}"])`
+    ).first();
+
+    if (await product.count() === 0) {
+        await this.clickOnProduct(); 
+        product = this.page.locator(
+            `.productinfo:has([data-product-id="${productId}"])`
+        ).first();
+    }
+
+    await expect(product).toBeVisible();
 
 
-      await product.waitFor({
-          state:'visible'
-      });
+    const productName = (
+        await product.locator('p').innerText()
+    ).slice(0,33);
 
 
-      const productName = (
-          await product.locator('p').innerText()
-      ).slice(0,33);
+    const price = Number(
+        (await product.locator('h2').innerText())
+        .replace(/\D/g,'')
+    );
 
 
-      const price = Number(
-          (await product.locator('h2').innerText())
-          .replace(/\D/g,'')
-      );
+    await product
+        .locator(`[data-product-id="${productId}"]`)
+        .click();
+
+    await expect(this.page.locator('.modal-content')).toContainText('Added!');
 
 
-      await product
-          .locator(`[data-product-id="${productId}"]`)
-          .click();
-
-
-      return {
-          productName,
-          price,
-          quantity:1
-      };
+    return {
+        productName,
+        price,
+        quantity:1
+    };
   }
 
   async clickContinueShopping() {
     await this.page.getByRole('button', { name: 'Continue Shopping' }).click();
+    await expect(this.page.locator('.modal-content')).toBeHidden();
   }
 
   async clickViewCart() {

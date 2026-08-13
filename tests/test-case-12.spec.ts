@@ -10,7 +10,7 @@ test('Add Products in Cart', async ({
 
   await loginPage.goto();
   
-  await loginPage.clickOnProduct();
+  await productsPage.clickOnProduct();
 
   const selectedProducts: Product[] = [];
   const productIds = [41, 23, 41, 41];

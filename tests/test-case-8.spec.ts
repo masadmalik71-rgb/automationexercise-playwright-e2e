@@ -5,7 +5,7 @@ test('Verify All Products and product detail page', async ({
   productDetailsPage,
 }) => {
   
-  await productsPage.gotoProducts();
+  await productsPage.clickOnProduct();
   await productsPage.clickViewProductDetails(2);
   await productDetailsPage.lookInProductDetails();
 });

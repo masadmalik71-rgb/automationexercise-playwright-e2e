@@ -89,10 +89,12 @@ Run all tests:
 npx playwright test
 ```
 
-Run tests in a specific browser:
+Run tests in a specific browser project:
 
 ```bash
 npx playwright test --project=chromium
+npx playwright test --project=firefox
+npx playwright test --project=webkit
 ```
 
 Open the latest HTML report:
@@ -129,12 +131,13 @@ Playwright configuration is defined in `playwright.config.ts`.
 Key settings:
 
 - Tests are loaded from the `tests` directory
-- Tests run against Chromium
-- Additional browser projects are present in the config as commented examples
+- Browser projects are enabled for Chromium, Firefox, and WebKit
+- Tests are configured for full parallel mode with one worker
 - HTML reports are generated after test runs
 - Traces are collected on the first retry
 - CI retries failed tests twice
-- `BASE_URL` is loaded from `.env` locally
+- `BASE_URL` is required in `.env` for setup and teardown
+- Playwright actions use `https://automationexercise.com` as the configured base URL
 - Auth state is reused from `playwright/.auth/user.json`
 - Actions time out after 15 seconds
 - Navigations time out after 60 seconds

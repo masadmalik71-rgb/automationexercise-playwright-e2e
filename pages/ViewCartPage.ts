@@ -20,12 +20,20 @@ export class ViewCartPage{
 
     while (await removeButtons.count() > 0) {
 
-        const countBefore = await removeButtons.count();
+        const productRows = this.page.locator('#cart_info tbody tr').filter({
+            has: this.page.locator('.cart_quantity_delete')
+        });
+        const row = productRows.first();
+        const rowId = await row.getAttribute('id');
+        const countBefore = await productRows.count();
 
-        await removeButtons.first().click();
+        await row.locator('.cart_quantity_delete').click();
 
-        await expect(removeButtons)
-            .toHaveCount(countBefore - 1);
+        if (rowId) {
+            await expect(this.page.locator(`#${rowId}`)).toBeHidden();
+        } else {
+            await expect(productRows).toHaveCount(countBefore - 1);
+        }
     }
 
     await expect(this.page.locator('#cart_info')).toContainText('Cart is empty');
@@ -43,12 +51,17 @@ export class ViewCartPage{
       await expect(productRow).toBeVisible();
 
 
-      await expect(productRow).toContainText(
+      await expect(productRow.locator('.cart_price')).toContainText(
           `Rs. ${product.price}`
       );
 
 
-      await expect(productRow).toContainText(
+      await expect(productRow.locator('.cart_quantity')).toContainText(
+          product.quantity.toString()
+      );
+
+
+      await expect(productRow.locator('.cart_total_price')).toContainText(
           `Rs. ${product.price * product.quantity}`
       );
 

@@ -1,5 +1,4 @@
-import { Page, expect } from "@playwright/test";
-import { CustomerData } from "../utils/datamaker";
+import { Locator, Page, expect } from "@playwright/test";
 
 export class HomePage{
   readonly page:Page;
@@ -8,22 +7,42 @@ export class HomePage{
       this.page = page;
   }
 
-  async clickOnCategoryAndSubCategory(categoryName:string, subCategoryName:string) {
-    let categoryDropdown = this.page.getByRole('link', { name: `${categoryName}` });
-    if(categoryName === 'Men') {
-      categoryDropdown = this.page.getByRole('link', { name: `${categoryName}` }).nth(1);
-    }
-    await categoryDropdown.click();
-    let subCategory = this.page.getByRole('link', { name: `${subCategoryName}` });
-    if(subCategoryName === 'Dress') {
-      subCategory = this.page.locator(`#${categoryName}`).getByRole('link', { name: `${subCategoryName}` });
-    }
-    await subCategory.click();
+  productCard(productName: string): Locator {
+    return this.page
+      .locator('div')
+      .filter({ hasText: productName })
+      .nth(5);
+  }
+  
+  categoryDropdown(categoryName: string): Locator {
+    const category = this.page.getByRole('link', { name: categoryName });
+
+    return categoryName === 'Men'
+      ? category.nth(1)
+      : category.first();
   }
 
-  async confirmProduct(productName:string) {
-    const productCard = this.page.locator('div').filter({ hasText: `${productName}` }).nth(5);
-    await expect(productCard).toBeVisible();
+
+  subCategoryDropdown(categoryName: string, subCategoryName: string): Locator {
+
+    if (subCategoryName === 'Dress') {
+      return this.page
+        .locator(`#${categoryName}`)
+        .getByRole('link', { name: subCategoryName });
+    }
+
+    return this.page.getByRole('link', { name: subCategoryName });
+  }
+
+  async clickOnCategoryAndSubCategory(categoryName:string, subCategoryName:string) {
+    await this.categoryDropdown(categoryName).click();
+    await this.subCategoryDropdown(categoryName, subCategoryName).click();
+  }
+
+  async confirmProduct(productName: string) {
+    await expect(
+      this.productCard(productName)
+    ).toBeVisible();
   }
 
 }

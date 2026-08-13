@@ -2,6 +2,7 @@ import { test, expect } from "../fixtures/testFixtures";
 import { Product } from "../types/products";
 
 test('Place Order: Login before Checkout', async ({
+  page,
   loginPage,
   productsPage,
   viewCartPage,
@@ -25,10 +26,7 @@ test('Place Order: Login before Checkout', async ({
   await viewCartPage.matchDetails(selectedProducts);
 
   await viewCartPage.clickProceedToCheckout();
-
-  await loginPage.clickOnCart();
-
-  await viewCartPage.clickProceedToCheckout();
+  await expect(page).toHaveURL('/checkout');
 
   await checkOutPage.confirmCustomerDetail(customerData);
 

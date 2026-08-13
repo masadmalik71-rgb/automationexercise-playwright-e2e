@@ -8,7 +8,7 @@ test('Verify Product quantity in Cart', async ({
   viewCartPage,
 }) => {
   await loginPage.goto();
-  await loginPage.clickOnProduct();
+  await productsPage.clickOnProduct();
   await productsPage.clickViewProductDetails(43);
   
   const selectedProducts: Product[] = [];

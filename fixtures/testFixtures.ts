@@ -9,6 +9,7 @@ import { ProductsPage } from "../pages/ProductsPage";
 import { SignUpPage } from '../pages/SignUpPage';
 import { ViewCartPage } from "../pages/ViewCartPage";
 import { ProductDetailsPage } from "../pages/ProductDetailsPage"
+import { HomePage } from '../pages/HomePage';
 
 
 import type { CustomerData } from '../utils/datamaker';
@@ -24,6 +25,7 @@ type MyFixture = {
   signUpPage: SignUpPage;
   viewCartPage: ViewCartPage;
   productDetailsPage: ProductDetailsPage;
+  homePage: HomePage;
 
 };
 
@@ -38,6 +40,10 @@ export const test = base.extend<MyFixture>({
     );
 
     await use(customerData);
+  },
+
+  homePage: async ({ page }, use) => {
+    await use(new HomePage(page));
   },
 
   loginPage: async ({ page }, use) => {

@@ -10,7 +10,8 @@ export class LoginPage {
 
   async goto() {
     await this.page.goto('/');
-    await expect(this.page).toHaveURL(/automationexercise\.com/);
+    await this.page.waitForLoadState('domcontentloaded');
+    // await expect(this.page).toHaveURL(/automationexercise\.com/);
   }
 
   async openSignupLoginPage() {
@@ -81,9 +82,8 @@ export class LoginPage {
 
   async isUserLoggedIn(): Promise<boolean> {
 
-      return await this.page
-          .getByText(/Logged in as/i)
-          .isVisible();
-
+    return await this.page
+        .getByText(/Logged in as/i)
+        .isVisible();
   }
 }

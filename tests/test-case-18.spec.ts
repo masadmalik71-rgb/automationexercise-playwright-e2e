@@ -1,10 +1,9 @@
 import { test } from "../fixtures/testFixtures";
 import { Product } from "../types/products";
 
-test('Remove Products From Cart', async ({
+test('View Category Products', async ({
   loginPage,
-  productsPage,
-  viewCartPage,
+  homePage,
   customerData,
 }) => {
   await loginPage.goto();
@@ -17,15 +16,13 @@ test('Remove Products From Cart', async ({
 
   await loginPage.goto();
 
-  const selectedProducts: Product[] = [];
+  await homePage.clickOnCategoryAndSubCategory('Women', 'Dress');
 
-  await productsPage.clickAddToCart(4)
+  await homePage.confirmProduct('Sleeveless Dress');
 
-  await productsPage.clickViewCart();
+  await homePage.clickOnCategoryAndSubCategory('Men', 'Jeans');
 
-  await viewCartPage.matchDetails(selectedProducts);
-
-  await viewCartPage.removeAllProducts();
+  await homePage.confirmProduct('Soft Stretch Jeans');
 
   const loggedIn = await loginPage.isUserLoggedIn();
 
